@@ -2,6 +2,7 @@ import math
 import libdw.util as util
 import libdw.sm as sm
 import libdw.gfx as gfx
+import math as m
 from soar.io import io
 
 BUF = 0.1
@@ -9,26 +10,38 @@ OBS_DIST = 0.5
 class MySMClass(sm.SM):
     startState = 0
     def getNextValues(self, state, inp):
-        if state == 0 and inp.sonars[2] <0.3:
-            nextstate = 0
-            output = (io.Action(fvel = -0.5, rvel = 0))
-        elif state == 0 and inp.sonars[2]>0.5:
-            nextstate = 0
-            output = (io.Action(fvel = 0.5, rvel = 0))
-        elif state == 0 and inp.sonars[2]>=0.3 and inp.sonars[2]<=0.5:
-            nextstate = 1
-            output = (io.Action(fvel = 0, rvel = 0.5))
-        elif state == 1:
-            if inp.sonars[4]>0.5: 
-                nextstate = 1
-                output = (io.Action(fvel = 0, rvel = 0.5))
-            elif inp.sonars[4]<=0.5: 
+        if state == 0:
+            if inp.sonars[2]<0.3:
                 nextstate = 2
-                output = (io.Action(fvel = 0.5, rvel = 0))
-        elif state == 2 and inp.sonars[4]>0.5 or inp.sonars[4]<0.3:
-            nextstate = 1
-            output = (io.Action(fvel = 0.5, rvel = 0))
+                output = (io.Action(fvel = 0, rvel = 0))
+            elif inp.sonars[2]>=0.5 and inp.sonars[4]<0.5:
+                nextstate = 3
+                output = (io.Action(fvel = 0, rvel = 0))
+            elif inp.sonars[2]>=0.5 and inp.sonars[4]>=0.5:
+                nextstate = 1
+                output = (io.Action(fvel = 0, rvel = 0))
+            else: 
+                nextstate = 0
+                output = (io.Action(fvel = 0.2, rvel = 0))
+        elif state == 1:
+            if inp.sonars[2]<0.5 and inp.sonars[2]>0.3:
+                nextstate = 3
+                output = (io.Action(fvel = 0.2, rvel = 0))
+            else: 
+                nextstate = 1
+                output = (io.Action(fvel = 0.2, rvel = 0))
+        elif state == 2:
+            nextstate = 0
+            output = (io.Action(fvel = -0.2, rvel = 0))
+        elif state == 3:
+            if inp.sonars[3] >= m.sqrt(2)*inp.sonars[4]-0.05 and np.sonars[3] < m.sqrt(2)*inp.sonars[4]+0.05:
+                nextstate = 1
+                output = (io.Action(fvel = 0, rvel = 1))
+            else: 
+                nextstate = 3
+                output = (io.Action(fvel = 0, rvel = 1))
         return (nextstate, output)
+            
 
 mySM = MySMClass()
 mySM.name = 'brainSM'
