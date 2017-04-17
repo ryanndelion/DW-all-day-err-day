@@ -92,13 +92,13 @@ def main():
 
 
     def algo(x,y):
-        return clf.coef_[0]*x**2-clf.coef_[2]*x+clf.coef_[1]*y**2+clf.coef_[3]*y
+        return clf.coef_[0]*x**2-clf.coef_[2]*x+clf.coef_[1]*y**2+clf.coef_[3]*y,25-x,y
     def Implementation():
         while True:
 
-            P_A = algo(0,methane)
-            P_B = algo(0,0)
-            P_C = algo(0,0)
+            P_A,height_A,methane_A = algo(0,methane)
+            P_B,heihgt_B,methane_B = algo(0,0)
+            P_C,height_C,methane_C = algo(0,0)
             dict_routes = {}
             print P_A,P_B,P_C
 
@@ -116,7 +116,7 @@ def main():
             dict_routes['BCA'] = P_BCA
             dict_routes['ABC'] = P_ABC
 
-            time.sleep(20)
+            time.sleep(5)
 
             def keywithmaxval(d):
                 """ a) create a list of the dict's keys and values;
