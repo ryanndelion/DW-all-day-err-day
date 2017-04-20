@@ -1,0 +1,325 @@
+#:import hex kivy.utils.get_color_from_hex 
+#:import ListProperty kivy.properties.ListProperty
+<Slider>: #define a canvas over all sliders called 'Slider' in order to create a custom slider
+    canvas:
+        Color:
+            rgb: hex('#2A2C27')
+            #rgba: 1,1,1,1
+        BorderImage:
+            border: (0, 18, 0, 18) if self.orientation == 'horizontal' else (18, 0, 18, 0)
+            pos: (self.x, self.center_y - 18) if self.orientation == 'horizontal' else (self.center_x - 18, self.y)
+            size: (self.width, 35) if self.orientation == 'horizontal' else (35, self.height)
+            source: 'slider%s_background.png' % self.orientation[0]
+        Rectangle:
+            pos: (self.value_pos[0] - 16, self.center_y - 17) if self.orientation == 'horizontal' else (self.center_x - 16, self.value_pos[1] - 16)
+            size: (33, 33)
+            source: 'icon2.png'
+            #color: hex('#CDCEEE')
+<RootWidget>:
+    Slider
+
+
+
+<MenuScreen>
+	canvas.before: #create a canvas over the background to change the color
+		Color:
+			#rgba: (0.07, 0.08, 0.04, 1)
+			rgb: hex('#151712')
+		Rectangle:
+        	pos: self.pos   
+        	size: self.size
+	BoxLayout:
+		orientation: 'vertical'
+
+		BoxLayout:
+			size_hint_y: 0.03 #will take 3% of the screen height
+			Label:
+				text: 'Trashold v1.0'
+				text_size: self.size #text size same as box size
+				font_size: 12
+				font_name: 'CutiveMono-Regular'
+				
+		Image:
+			source: 'Trashold2.png'
+
+		BoxLayout:
+			size_hint_y: 0.12 #takes 12% of screen height
+			Button: 
+				on_press: root.switchI() #use the function switchI from the python code
+				text: 'Start'
+				font_size: 24
+				font_name: 'Adam'
+				color: hex('#151712')
+				background_normal: ''  #replace black background with a blank white background. This prevents the darkening of the color chosen
+				background_color: hex('#83A55C') 
+
+			Button:
+				on_press: root.quitApp() #Quit app when button is pressed
+				text: 'Quit'
+				font_size: 24
+				font_name: 'Adam'
+				color: hex('#151712')
+				background_normal: ''
+				background_color: hex('#A93F55')
+
+
+
+<InputScreen>
+	canvas.before:
+		Color:
+			#rgba: (0.07, 0.08, 0.04, 1)
+			rgb: hex('#151712')
+		Rectangle:
+        	pos: self.pos   
+        	size: self.size
+
+	BoxLayout:
+		orientation: 'vertical'
+		BoxLayout:
+			size_hint_y: 0.015
+
+		Label:
+			size_hint_y: 0.1
+			valign: 'bottom'
+			text: 'Please select values for each sensor.'
+			font_size: 24
+			font_name: 'Adam'
+			color: hex('#CBCEEE')
+			background_color: hex('#ffffff')
+		
+		BoxLayout:
+			size_hint_y: 0.185
+			Label:
+				text: 'Ultrasound (B)'
+				font_size: 20
+				font_name: 'Adam'
+				color: hex('#CBCEEE')
+
+			AnchorLayout: #align all widgets to the centre of the box
+				orientation: 'vertical'	
+				Slider:
+					#halign: 'center'
+					size_hint_x: 0.9
+					id: ultrasound_b #creates an id for the slider to easily call the slider value whenever needed
+					value_track: True
+					#value_track_color: ListProperty([0,0,0,1])
+					#value_track_width: 5
+					value: 25.0 #set initial value for the slider
+					range: (0,25) #set slider range
+					step: 0.1 #step size of the slider
+				Label:
+					#size_hint_y: 0.3
+					valign: 'middle'
+					text: str(ultrasound_b.value) #display the current value of the slider
+					font_size: 20
+					font_name: 'Adam'
+					color: hex('#CBCEEE')
+
+		BoxLayout:
+			size_hint_y: 0.185
+			Label:
+				text: 'Methane (B)'
+				font_size: 20
+				font_name: 'Adam'
+				color: hex('#CBCEEE')
+
+			AnchorLayout:
+				orientation: 'vertical'	
+				Slider:
+					size_hint_x: 0.9
+					id: methane_b
+					value_track: True
+					#value_track_color: 0,0,0
+					#value_track_width: 5
+					value: 0
+					range: (0,400)
+					step: 1
+				Label:
+					#size_hint_y: 0.3
+					valign: 'middle'
+					text: str(methane_b.value)
+					font_size: 20
+					font_name: 'Adam'
+					color: hex('#CBCEEE')
+
+		
+		BoxLayout:
+			size_hint_y: 0.185
+			Label:
+				text: 'Ultrasound (C)'
+				font_size: 20
+				font_name: 'Adam'
+				color: hex('#CBCEEE')
+
+			AnchorLayout:
+				orientation: 'vertical'	
+				Slider:
+					size_hint_x: 0.9
+					id: ultrasound_c
+					value_track: True
+					#value_track_color: 0,0,0,1
+					#value_track_width: 5
+					value: 25.0
+					range: (0,25)
+					step: 0.1
+				Label:
+					#size_hint_y: 0.3
+					valign: 'middle'
+					text: str(ultrasound_c.value)
+					font_size: 20
+					font_name: 'Adam'
+					color: hex('#CBCEEE')
+
+
+
+		BoxLayout:
+			size_hint_y: 0.185
+			Label:
+				text: 'Methane (C)'
+				font_size: 20
+				font_name: 'Adam'
+				color: hex('#CBCEEE')
+
+			AnchorLayout:
+				orientation: 'vertical'	
+				Slider:
+					size_hint_x: 0.9
+					id: methane_c
+					value_track: True
+					#value_track_color: 0,0,0
+					#value_track_width: 5
+					value: 0
+					range: (0,400)
+					step: 1
+				Label:
+					#size_hint_y: 0.3
+					valign: 'middle'
+					text: str(methane_c.value)
+					font_size: 20
+					font_name: 'Adam'
+					color: hex('#CBCEEE')
+		BoxLayout:
+			size_hint_y: 0.015
+		
+		BoxLayout:
+			size_hint_y: 0.10
+			Button: 
+				on_press: root.switchC() 
+				on_press: root.getvals(methane_c.value) #use the getvals function to input the slider values into the algorithm
+				on_press: root.getvals(ultrasound_c.value)
+				on_press: root.getvals(methane_b.value)
+				on_press: root.getvals(ultrasound_b.value)
+				#on_press: root.state()
+				text: 'Next'
+				font_size: 24
+				font_name: 'Adam'
+				color: hex('#151712')
+				background_normal: '' 
+				background_color: hex('#83A55C')
+
+
+			Button:
+				on_press: root.switchM() 
+				text: 'Return to Menu'
+				font_size: 24
+				font_name: 'Adam'
+				color: hex('#151712')
+				background_normal: ''
+				background_color: hex('#A93F55')
+
+
+
+<ChoiceScreen>
+	BoxLayout:
+		orientation: 'vertical'	
+
+		BoxLayout:
+			size_hint_y: 0.44
+			Button:
+				on_press: root.switchM()
+				background_normal: 'bugis2.png'
+			Button:
+				on_press: root.switchM()
+				background_normal: 'clementi2.png'
+
+		BoxLayout:
+			size_hint_y: 0.44
+			Button:
+				on_press: root.switchM()
+				background_normal: 'pasirris2.png'
+			Button:
+				on_press: root.switchM()
+				background_normal: 'hougang2.png'
+
+		BoxLayout:
+			size_hint_y: 0.10
+			Button: 
+				on_press: root.switchL()
+				text: 'New Location'
+				font_size: 24
+				font_name: 'Adam'
+				color: hex('#151712')
+				background_normal: ''  
+				background_color: hex('#83A55C') 
+
+			Button:
+				on_press: root.switchI()
+				text: 'Back'
+				font_size: 24
+				font_name: 'Adam'
+				color: hex('#151712')
+				background_normal: ''
+				background_color: hex('#A93F55')
+
+
+
+<LocationScreen>
+	BoxLayout:
+		orientation: 'vertical'
+
+		Label:
+		#size_hint_y: 0.13
+			#text_size: self.size
+			halign: 'center'
+			valign: 'middle'
+			text: 'Real time maps not available \n \n Please choose an available depot'
+			font_size: 24
+			font_name: 'Adam'
+			color: hex('#CBCEEE')
+	
+
+		BoxLayout:
+			size_hint_y: 0.11
+			Button: 
+				on_press: root.switchM()
+				text: 'Next'
+				font_size: 24
+				font_name: 'Adam'
+				color: hex('#151712')
+				background_normal: ''  #replace black background with a blank white background. This prevents the darkening of the color chosen
+				background_color: hex('#83A55C') 
+
+			Button:
+				on_press: root.switchC()
+				text: 'Back'
+				font_size: 24
+				font_name: 'Adam'
+				color: hex('#151712')
+				background_normal: ''
+				background_color: hex('#A93F55')
+
+
+
+<MapScreen> 
+	#create a canvas over the screen to change the color of the empty space
+	canvas.before:
+		Color:
+			#rgba: (0.07, 0.08, 0.04, 1)
+			rgb: hex('#151712')
+		Rectangle:
+        	pos: self.pos   
+        	size: self.size
+
+
+
+
